@@ -92,8 +92,11 @@ bool chacha20poly1305_encrypt_sg_inplace(struct scatterlist *src,
 		__le64 lens[2];
 	} b __aligned(16) = { { 0 } };
 
+<<<<<<< HEAD
 	if (WARN_ON(src_len > INT_MAX))
 		return false;
+=======
+>>>>>>> 54767ae2cbeb... net: add wireguard 0.0.20200205
 
 	chacha20_init(&chacha20_state, key, nonce);
 	chacha20(&chacha20_state, b.block0, b.block0, sizeof(b.block0),
@@ -255,7 +258,11 @@ bool chacha20poly1305_decrypt_sg_inplace(struct scatterlist *src,
 	} b __aligned(16) = { { 0 } };
 	bool ret = false;
 
+<<<<<<< HEAD
 	if (unlikely(src_len < POLY1305_MAC_SIZE || WARN_ON(src_len > INT_MAX)))
+=======
+	if (unlikely(src_len < POLY1305_MAC_SIZE))
+>>>>>>> 54767ae2cbeb... net: add wireguard 0.0.20200205
 		return ret;
 	src_len -= POLY1305_MAC_SIZE;
 

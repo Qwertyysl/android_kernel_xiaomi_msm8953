@@ -24,7 +24,10 @@
 set -e
 
 exec 3>&1
+<<<<<<< HEAD
 export LANG=C
+=======
+>>>>>>> 54767ae2cbeb... net: add wireguard 0.0.20200205
 export WG_HIDE_KEYS=never
 netns0="wg-test-$$-0"
 netns1="wg-test-$$-1"
@@ -301,6 +304,7 @@ if [[ $(ip1 -4 rule show all) == *suppress_prefixlength* ]]; then
 	n1 ping -W 1 -c 100 -f abab::1111
 fi
 
+<<<<<<< HEAD
 # Have ns2 NAT into wg0 packets from ns0, but return an icmp error along the right route.
 n2 iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -d 192.168.241.0/24 -j SNAT --to 192.168.241.2
 n0 iptables -t filter -A INPUT \! -s 10.0.0.0/24 -i vethrs -j DROP # Manual rpfilter just to be explicit.
@@ -312,6 +316,9 @@ n2 wg set wg0 peer "$pub1" remove
 n0 iptables -t nat -F
 n0 iptables -t filter -F
 n2 iptables -t nat -F
+=======
+n0 iptables -t nat -F
+>>>>>>> 54767ae2cbeb... net: add wireguard 0.0.20200205
 ip0 link del vethrc
 ip0 link del vethrs
 ip1 link del wg0
