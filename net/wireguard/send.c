@@ -144,7 +144,6 @@ static void keep_key_fresh(struct wg_peer *peer)
 
 static unsigned int calculate_skb_padding(struct sk_buff *skb)
 {
-<<<<<<< HEAD
 	unsigned int padded_size, last_unit = skb->len;
 
 	if (unlikely(!PACKET_CB(skb)->mtu))
@@ -161,18 +160,6 @@ static unsigned int calculate_skb_padding(struct sk_buff *skb)
 
 	padded_size = min(PACKET_CB(skb)->mtu,
 			  ALIGN(last_unit, MESSAGE_PADDING_MULTIPLE));
-=======
-	/* We do this modulo business with the MTU, just in case the networking
-	 * layer gives us a packet that's bigger than the MTU. In that case, we
-	 * wouldn't want the final subtraction to overflow in the case of the
-	 * padded_size being clamped.
-	 */
-	unsigned int last_unit = skb->len % PACKET_CB(skb)->mtu;
-	unsigned int padded_size = ALIGN(last_unit, MESSAGE_PADDING_MULTIPLE);
-
-	if (padded_size > PACKET_CB(skb)->mtu)
-		padded_size = PACKET_CB(skb)->mtu;
->>>>>>> 54767ae2cbeb... net: add wireguard 0.0.20200205
 	return padded_size - last_unit;
 }
 
@@ -438,3 +425,4 @@ out_nokey:
 	 */
 	wg_packet_send_queued_handshake_initiation(peer, false);
 }
+

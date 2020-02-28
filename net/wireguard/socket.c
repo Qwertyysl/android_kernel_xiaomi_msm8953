@@ -432,10 +432,7 @@ void wg_socket_reinit(struct wg_device *wg, struct sock *new4,
 		wg->incoming_port = ntohs(inet_sk(new4)->inet_sport);
 	mutex_unlock(&wg->socket_update_lock);
 	synchronize_rcu();
-<<<<<<< HEAD
-=======
-	synchronize_net();
->>>>>>> 54767ae2cbeb... net: add wireguard 0.0.20200205
 	sock_free(old4);
 	sock_free(old6);
 }
+

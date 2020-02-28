@@ -932,7 +932,6 @@ static inline void skb_mark_not_on_list(struct sk_buff *skb)
 #define chacha20_neon zinc_chacha20_neon
 #endif
 
-<<<<<<< HEAD
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3, 19, 0)
 #include <linux/skbuff.h>
 static inline int skb_ensure_writable(struct sk_buff *skb, int write_len)
@@ -1025,8 +1024,6 @@ out:
 #define COMPAT_CANNOT_USE_MAX_MTU
 #endif
 
-=======
->>>>>>> 54767ae2cbeb... net: add wireguard 0.0.20200205
 #if defined(ISUBUNTU1604)
 #include <linux/siphash.h>
 #ifndef _WG_LINUX_SIPHASH_H
@@ -1051,43 +1048,6 @@ out:
 #define BUILD_BUG_ON(x)
 #endif
 
-<<<<<<< HEAD
-=======
-/* https://lkml.kernel.org/r/20170624021727.17835-1-Jason@zx2c4.com */
-#if IS_ENABLED(CONFIG_NF_CONNTRACK)
-#include <linux/ip.h>
-#include <linux/icmpv6.h>
-#include <net/ipv6.h>
-#include <net/icmp.h>
-#include <net/netfilter/nf_conntrack.h>
-#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 1, 0)
-#include <net/netfilter/nf_nat_core.h>
-#endif
-static inline void new_icmp_send(struct sk_buff *skb_in, int type, int code, __be32 info)
-{
-	enum ip_conntrack_info ctinfo;
-	struct nf_conn *ct = nf_ct_get(skb_in, &ctinfo);
-	if (skb_network_header(skb_in) < skb_in->head || (skb_network_header(skb_in) + sizeof(struct iphdr)) > skb_tail_pointer(skb_in))
-		return;
-	if (ct)
-		ip_hdr(skb_in)->saddr = ct->tuplehash[0].tuple.src.u3.ip;
-	icmp_send(skb_in, type, code, info);
-}
-static inline void new_icmpv6_send(struct sk_buff *skb, u8 type, u8 code, __u32 info)
-{
-	enum ip_conntrack_info ctinfo;
-	struct nf_conn *ct = nf_ct_get(skb, &ctinfo);
-	if (skb_network_header(skb) < skb->head || (skb_network_header(skb) + sizeof(struct ipv6hdr)) > skb_tail_pointer(skb))
-		return;
-	if (ct)
-		ipv6_hdr(skb)->saddr = ct->tuplehash[0].tuple.src.u3.in6;
-	icmpv6_send(skb, type, code, info);
-}
-#define icmp_send(a,b,c,d) new_icmp_send(a,b,c,d)
-#define icmpv6_send(a,b,c,d) new_icmpv6_send(a,b,c,d)
-#endif
-
->>>>>>> 54767ae2cbeb... net: add wireguard 0.0.20200205
 /* PaX compatibility */
 #ifdef CONSTIFY_PLUGIN
 #include <linux/cache.h>
@@ -1108,3 +1068,4 @@ static inline void new_icmpv6_send(struct sk_buff *skb, u8 type, u8 code, __u32 
 #endif
 
 #endif /* _WG_COMPAT_H */
+
