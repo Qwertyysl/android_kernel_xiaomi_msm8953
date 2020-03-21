@@ -597,7 +597,7 @@ static int qpnp_rtc_probe(struct platform_device *pdev)
 		rtc_ops = &qpnp_rtc_rw_ops;
 
 	dev_set_drvdata(&pdev->dev, rtc_dd);
-	device_init_wakeup(&pdev->dev, 1);
+	
 	/* Register the RTC device */
 	rtc_dd->rtc = rtc_device_register("qpnp_rtc", &pdev->dev,
 					  rtc_ops, THIS_MODULE);
