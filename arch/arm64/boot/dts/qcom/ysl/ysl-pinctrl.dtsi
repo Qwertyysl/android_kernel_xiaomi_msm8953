@@ -72,6 +72,28 @@
 				pins = "gpio129";
 			};
 		};
+	wsa_reset {
+			wsa_reset_on: wsa_reset_on {
+				mux {
+					/delete-property/pins;
+				};
+
+				config {
+					/delete-property/pins;
+				};
+			};
+
+			wsa_reset_off: wsa_reset_off {
+				mux {
+					/delete-property/pins;
+				};
+
+				config {
+					/delete-property/pins;
+				};
+			};
+		};
+		
 		spi5 {
 			spi5_default: spi5_default {
 				/* active state */
@@ -131,6 +153,71 @@
 				};
 			};
 		};
+		
+pmx_ts_int_active {
+			ts_int_active: ts_int_active {
+				mux {
+					pins = "gpio65";
+					function = "gpio";
+				};
+
+				config {
+					pins = "gpio65";
+					drive-strength = <8>;
+					bias-pull-up;
+					output-high;
+				};
+			};
+		};
+
+		pmx_ts_int_suspend {
+			ts_int_suspend: ts_int_suspend {
+				mux {
+					pins = "gpio65";
+					function = "gpio";
+				};
+
+				config {
+					pins = "gpio65";
+					drive-strength = <8>;
+					bias-pull-down;
+					output-low;
+				};
+			};
+		};
+
+		pmx_ts_reset_active {
+			ts_reset_active: ts_reset_active {
+				mux {
+					pins = "gpio64";
+					function = "gpio";
+				};
+
+				config {
+					pins = "gpio64";
+					drive-strength = <8>;
+					bias-pull-up;
+					output-high;
+				};
+			};
+		};
+
+		pmx_ts_reset_suspend {
+			ts_reset_suspend: ts_reset_suspend {
+				mux {
+					pins = "gpio64";
+					function = "gpio";
+				};
+
+				config {
+					pins = "gpio64";
+					drive-strength = <8>;
+					bias-pull-down;
+					 output-low;
+				};
+			};
+		};
+		
 	pmx_ts_int_release {
                             ts_as_int: ts_as_int {
                                 mux {

@@ -11,6 +11,7 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
+
  
  &spi_3 { /* BLSP1 QUP3 */
 	status = "disabled";   /*modify by shenwenbin for disable spi3 to release gpio 20181228 */
@@ -126,6 +127,15 @@
 	/delete-property/qcom,lra-res-cal-period;
 	qcom,wave-play-rate-us = <4165>;
 };
+
+&mdss_mdp {
+	qcom,mdss-pref-prim-intf = "dsi";
+};
+
+&mdss_dsi {
+	hw-config = "single_dsi";
+};
+
 &mdss_dsi0 {
 	qcom,dsi-pref-prim-pan = <&dsi_sc_ili9881c_hd720_video>;
 	pinctrl-names = "mdss_default", "mdss_sleep";
@@ -148,15 +158,25 @@
 };
 &dsi_sc_ili9881c_hd720_video{
 	qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;
-	qcom,mdss-dsi-bl-min-level = <1>;
-	qcom,mdss-dsi-bl-max-level = <4095>;
 };
+
 &wsa881x_i2c_f {
 	status = "disabled";
 };
 &wsa881x_i2c_45 {
 	status = "disabled";
 };	
+
+&pmi8940_fg {
+	qcom,battery-data = <&mtp_batterydata>;
+};
+
+&pmi8940_charger {
+	qcom,battery-data = <&mtp_batterydata>;
+	qcom,chg-led-sw-controls;
+	qcom,chg-led-support;
+};
+
 &sdhc_2 {
 	cd-gpios = <&tlmm 133 0x0>;
 };
