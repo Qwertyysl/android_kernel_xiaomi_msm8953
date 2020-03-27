@@ -298,12 +298,6 @@
 			qcom,led-strings-list = [00 01 02];
 			qcom,en-cabc;
 		};
-       pmi_haptic: qcom,haptic@c000 {
-	        qcom,vmax-mv = <3000>;
-			qcom,actuator-type = <1>;
-			qcom,use-play-irq;
-			qcom,use-sc-irq;
-		};		
       };
 	};	
       	 
