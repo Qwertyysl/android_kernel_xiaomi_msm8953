@@ -480,7 +480,7 @@ module_param_named(
 	int, 00600
 );
 
-static int smbchg_default_dcp_icl_ma = 2000;
+static int smbchg_default_dcp_icl_ma = 1900;
 module_param_named(
 	default_dcp_icl_ma, smbchg_default_dcp_icl_ma,
 	int, 00600
@@ -4208,7 +4208,7 @@ static int smbchg_register_chg_led(struct smbchg_chip *chip)
 {
 	int rc;
 
-	chip->led_cdev.name = "green";
+	chip->led_cdev.name = "red";
 	chip->led_cdev.brightness_set = smbchg_chg_led_brightness_set;
 	chip->led_cdev.brightness_get = smbchg_chg_led_brightness_get;
 
@@ -4511,7 +4511,7 @@ static int smbchg_set_optimal_charging_mode(struct smbchg_chip *chip, int type)
 	return 0;
 }
 
-#define DEFAULT_SDP_MA		100
+#define DEFAULT_SDP_MA		500
 #define DEFAULT_CDP_MA		1500
 static int smbchg_change_usb_supply_type(struct smbchg_chip *chip,
 						enum power_supply_type type)
@@ -4531,9 +4531,7 @@ static int smbchg_change_usb_supply_type(struct smbchg_chip *chip,
 	 * modes, skip all BC 1.2 current if external typec is supported.
 	 * Note: for SDP supporting current based on USB notifications.
 	 */
-	if (chip->typec_psy && (type != POWER_SUPPLY_TYPE_USB))
-		current_limit_ma = chip->typec_current_ma;
-	else if (type == POWER_SUPPLY_TYPE_USB)
+	if (type == POWER_SUPPLY_TYPE_USB)
 		current_limit_ma = DEFAULT_SDP_MA;
 	else if (type == POWER_SUPPLY_TYPE_USB_CDP)
 		current_limit_ma = DEFAULT_CDP_MA;
@@ -4662,6 +4660,8 @@ static void xiaomi_jeita_work(struct work_struct *work)
 				struct smbchg_chip,
 				jeita_work.work);
 	int temp;
+	union power_supply_propval prop = {0,};
+
 	temp = get_prop_batt_temp(chip);
 
 	if(temp > 0 && temp <= chip->cool_xiaomi && !chip->batt_cool_xiaomi){
@@ -4684,10 +4684,18 @@ static void xiaomi_jeita_work(struct work_struct *work)
         vote(chip->fcc_votable, CUST_XIAOMI, false, 0);
 
 
+	if(chip->bms_psy){
+		power_supply_get_property(chip->bms_psy, POWER_SUPPLY_PROP_BATTERY_TYPE, &prop);
+		if(strcmp(prop.strval, "unknown-battery") == 0)
+			vote(chip->fcc_votable, "BATTCHG_UNKNOWN", true, 500);
+	}
+
 	schedule_delayed_work(&chip->jeita_work,
 			msecs_to_jiffies(JEITA_RESTART_DELAY_MS));
 	return;
 }
+
+
 
 static int set_usb_psy_dp_dm(struct smbchg_chip *chip, int state)
 {
